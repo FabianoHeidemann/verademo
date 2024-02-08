@@ -26,9 +26,6 @@ jobs:
       working-directory: app
       run: mvn -B package --file pom.xml
       
-  scan:
-    runs-on: ubuntu-latest
-    steps:
     - name: Download the Pipeline Scanner
       uses: wei/curl@master
       with:
