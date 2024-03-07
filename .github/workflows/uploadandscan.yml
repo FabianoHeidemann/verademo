@@ -29,10 +29,10 @@ jobs:
       run: mvn -B package --file pom.xml
         
     - name: Veracode Upload And Scan
-      uses: veracode/veracode-uploadandscan-action@0.2.1
+      uses: veracode/veracode-uploadandscan-action@0.2.6
       with:
         appname: Veracode GitHub
-        createprofile: true
+        createprofile: false
         version: ${{ github.run_id }}
         filepath: app/target/verademo.war
         # sandboxname: Github-Sandbox
