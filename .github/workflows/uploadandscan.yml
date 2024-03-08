@@ -38,4 +38,3 @@ jobs:
         sandboxname: Github-Sandbox
         vid: ${{ secrets.VERACODE_API_ID }}
         vkey: ${{ secrets.VERACODE_API_KEY }}
-        optargs: 'importResults true'
