@@ -33,6 +33,7 @@ jobs:
       with:
         appname: Veracode GitHub
         createprofile: true
+        createsandbox: true
         version: ${{ github.run_id }}
         filepath: app/target/verademo.war
         sandboxname: Github-Sandbox
