@@ -4,7 +4,7 @@ on: workflow_dispatch
 
 jobs:
   run_commands:
-    runs-on: ubuntu-latest  # You can choose a different OS if needed
+    runs-on: ubuntu-latest
 
     steps:
     - name: Checkout repository
@@ -13,7 +13,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
-        python-version: 3.x  # Specify the Python version you need
+        python-version: 3.x
 
     - name: Install dependencies
       run: |
@@ -21,19 +21,21 @@ jobs:
         cd veracode-mitigation-copier
         pip install -r requirements.txt
 
-    - name: List files
-      run: ls
+    # - name: List files
+    #   run: ls
       
-    - name: Create credentials file and store secrets
+    # - name: Create credentials file and store secrets
+    #   run: |
+    #     echo "VERACODE_API_KEY_ID= ${{secrets.VERACODE_API_ID}}" > credentials
+    #     echo "VERACODE_API_KEY_SECRET= ${{secrets.VERACODE_API_KEY}}" >> credentials
+    #     cat credentials  # Display the content of the file for verification
+
+    - name: Export Credentials
       run: |
-        echo "VERACODE_API_KEY_ID= ${{secrets.VERACODE_API_ID}}" > credentials
-        echo "VERACODE_API_KEY_SECRET= ${{secrets.VERACODE_API_KEY}}" >> credentials
-        cat credentials  # Display the content of the file for verification
+        export VERACODE_API_KEY_ID=${{secrets.VERACODE_API_ID}}
+        export VERACODE_API_KEY_SECRET=${{secrets.VERACODE_API_KEY}}
 
     - name: Mitigation Copier Command
-      run: python MitigationCopier.py --fromapp abcdefgh-1234-abcd-1234-123456789012 --toapp 12345678-abcd-1234-abcd-abcdefghijkl
+      run: python MitigationCopier.py --fromapp ef68596-41a2-4a8a-a9ad-9d55ff570aaa --toapp e962ed0e-c251-4136-92b0-ab66e37eca56
 
-      #export VERACODE_API_KEY_ID=<YOUR_API_KEY_ID>
-      #export VERACODE_API_KEY_SECRET=<YOUR_API_KEY_SECRET>
-      #python MitigationCopier.py (arguments)
       
