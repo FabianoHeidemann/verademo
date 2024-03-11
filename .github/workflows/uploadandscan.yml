@@ -37,6 +37,6 @@ jobs:
         version: ${{ github.run_id }}
         filepath: app/target/verademo.war
         sandboxname: Github-Sandbox
+        scantimeout: 60
         vid: ${{ secrets.VERACODE_API_ID }}
         vkey: ${{ secrets.VERACODE_API_KEY }}
-        optargs: '-scantimeout 60 failBuildOnPolicyFail true'
