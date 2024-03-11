@@ -18,11 +18,12 @@ jobs:
     - name: Install dependencies
       run: |
         git clone https://github.com/tjarrettveracode/veracode-mitigation-copier
-        cd veracode-mitigation-copier
         pip install -r requirements.txt
 
-    # - name: List files
-    #   run: ls
+    - name: List files
+      run: | 
+        cd veracode-mitigation-copier
+        ls
       
     # - name: Create credentials file and store secrets
     #   run: |
