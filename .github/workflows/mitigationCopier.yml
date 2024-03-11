@@ -21,25 +21,12 @@ jobs:
         cd veracode-mitigation-copier
         pip install -r requirements.txt
 
-    - name: List files
-      run: | 
-        cd veracode-mitigation-copier
-        ls
-      
-    # - name: Create credentials file and store secrets
-    #   run: |
-    #     echo "VERACODE_API_KEY_ID= ${{secrets.VERACODE_API_ID}}" > credentials
-    #     echo "VERACODE_API_KEY_SECRET= ${{secrets.VERACODE_API_KEY}}" >> credentials
-    #     cat credentials  # Display the content of the file for verification
-
     - name: Export Credentials
       run: |
         export VERACODE_API_KEY_ID=${{secrets.VERACODE_API_ID}}
         export VERACODE_API_KEY_SECRET=${{secrets.VERACODE_API_KEY}}
-        cd veracode-mitigation-copier
+        #cd veracode-mitigation-copier
         python MitigationCopier.py --fromapp bef68596-41a2-4a8a-a9ad-9d55ff570aaa --toapp e962ed0e-c251-4136-92b0-ab66e37eca56
 
-    # - name: Mitigation Copier Command
-    #   run: python MitigationCopier.py --fromapp ef68596-41a2-4a8a-a9ad-9d55ff570aaa --toapp e962ed0e-c251-4136-92b0-ab66e37eca56
 
       
