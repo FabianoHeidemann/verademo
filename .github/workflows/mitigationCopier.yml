@@ -1,4 +1,4 @@
-name: Run Commands
+name: Mitigation Copier
 
 on: workflow_dispatch
 
