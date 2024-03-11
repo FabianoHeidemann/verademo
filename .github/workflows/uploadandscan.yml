@@ -31,12 +31,12 @@ jobs:
     - name: Veracode Upload And Scan
       uses: veracode/veracode-uploadandscan-action@0.2.6
       with:
-        appname: Veracode GitHub
+        appname: Veracode GitHub Mitigation copier Source
         createprofile: true
         createsandbox: true
         version: ${{ github.run_id }}
         filepath: app/target/verademo.war
-        sandboxname: Github-Sandbox
+        sandboxname: Github-Sandbox-Source
         scantimeout: 60
         vid: ${{ secrets.VERACODE_API_ID }}
         vkey: ${{ secrets.VERACODE_API_KEY }}
