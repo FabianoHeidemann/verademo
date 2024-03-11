@@ -39,4 +39,5 @@ jobs:
         sandboxname: Github-Sandbox
         vid: ${{ secrets.VERACODE_API_ID }}
         vkey: ${{ secrets.VERACODE_API_KEY }}
-        optargs: '-scantimeout 30'
+        failBuildOnPolicyFail: true
+        optargs: '-scantimeout 60'
