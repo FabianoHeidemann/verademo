@@ -23,3 +23,9 @@ jobs:
 
     - name: List files
       run: ls
+      
+    - name: Create and save credentials
+      run: |
+        echo "VERACODE_API_KEY_ID= "${{secrets.VERACODE_API_ID}}" > credentials
+        echo "VERACODE_API_KEY_SECRET= "${{secrets.VERACODE_API_KEY}}" >> credentials
+        cat credentials  # Display the content of the file for verification
