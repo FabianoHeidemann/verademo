@@ -24,8 +24,16 @@ jobs:
     - name: List files
       run: ls
       
-    - name: Create and save credentials
+    - name: Create credentials file and store secrets
       run: |
         echo "VERACODE_API_KEY_ID= ${{secrets.VERACODE_API_ID}}" > credentials
         echo "VERACODE_API_KEY_SECRET= ${{secrets.VERACODE_API_KEY}}" >> credentials
         cat credentials  # Display the content of the file for verification
+
+    - name: Mitigation Copier Command
+      run: python MitigationCopier.py --fromapp abcdefgh-1234-abcd-1234-123456789012 --toapp 12345678-abcd-1234-abcd-abcdefghijkl
+
+      #export VERACODE_API_KEY_ID=<YOUR_API_KEY_ID>
+      #export VERACODE_API_KEY_SECRET=<YOUR_API_KEY_SECRET>
+      #python MitigationCopier.py (arguments)
+      
