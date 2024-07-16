@@ -1,0 +1,93 @@
+name: Pipeline Veracode Scanner
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-and-scan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Get Docker Image Name
+        id: get-image-name
+        run: |
+          IMAGE_NAME=$(awk '$1 == "FROM" { print $2; exit }' Dockerfile)
+          echo "::set-output name=image-name::$IMAGE_NAME"
+          echo "Docker image name: $IMAGE_NAME"
+
+      - name: Build Docker Image
+        run: docker build -t ${{ steps.get-image-name.outputs.image-name }} .
+
+      - name: Set Veracode Environment Variables
+        run: |
+          echo "Setting Veracode environment variables..."
+          export VERACODE_API_ID=${{ secrets.VERACODE_API_ID }}
+          export VERACODE_API_KEY=${{ secrets.VERACODE_API_KEY }}
+          echo "Veracode environment variables set."
+
+      - name: Create Veracode CLI Directory
+        run: mkdir -p veracode-cli
+
+      - name: Download Veracode CLI Install Script
+        run: |
+          cd veracode-cli
+          curl -fsS https://tools.veracode.com/veracode-cli/install | sh
+          
+
+      - name: Inspect Install Script
+        run: cat veracode-cli/install-veracode-cli.sh
+
+      - name: Validate and Adjust Script Permissions
+        run: |
+          echo "Verifying permissions of install-veracode-cli.sh..."
+          ls -l veracode-cli/install-veracode-cli.sh
+          chmod +x veracode-cli/install-veracode-cli.sh
+          echo "Permissions adjusted:"
+          ls -l veracode-cli/install-veracode-cli.sh
+
+      - name: Run Veracode CLI Install Script
+        env:
+          VERACODE_API_ID: ${{ secrets.VERACODE_API_ID }}
+          VERACODE_API_KEY: ${{ secrets.VERACODE_API_KEY }}
+        run: |
+          set -e
+          sh veracode-cli/install-veracode-cli.sh -b veracode-cli
+          echo "Installation script output:"
+          ls -Rla veracode-cli
+
+      - name: Find and Copy Veracode CLI Binary
+        run: |
+          echo "Finding and copying Veracode CLI binary..."
+          BIN_PATH=$(find /home/runner/work/davi-sig-legado-front-proxy/davi-sig-legado-front-proxy -name veracode -type f 2>/dev/null)
+          echo "Veracode CLI installed in: $BIN_PATH"
+          if [ -z "$BIN_PATH" ]; then
+            echo "Veracode CLI not found. Installation failed."
+            exit 1
+          else
+            cp "$BIN_PATH" veracode-cli/
+            chmod +x veracode-cli/veracode
+            echo "Veracode CLI copied to veracode-cli/ and permissions set."
+          fi
+
+      - name: Adjust PATH for Veracode CLI
+        run: |
+          echo "export PATH=\$PATH:$PWD/veracode-cli" >> $GITHUB_ENV
+          echo "Updated PATH to include Veracode CLI directory."
+
+      - name: Verify Veracode CLI Installation
+        run: |
+          ls
+          which veracode
+          ./veracode --version
+          echo "Veracode CLI verification complete."
+          
+
+      - name: Debug Information
+        run: |
+          echo "Contents of the working directory:"
+          ls -Rla
+          echo "Contents of veracode-cli:"
+          ls -Rla veracode-cli
