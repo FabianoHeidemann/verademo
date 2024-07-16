@@ -1,19 +1,15 @@
 name: Veracode CLI
-
-on:
-  workflow_dispatch:
-
+on: push
 jobs:
-
   veracode-cli:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Download Veracode CLI
-      with:
-        args: -fsS https://tools.veracode.com/veracode-cli/install | sh
-    - name: Test Instalation
-      run: ./veracode --version
-      env:
-        VERACODE_API_KEY_ID: ${{ secrets.VERACODE_API_ID }}
-        VERACODE_API_KEY_SECRET: ${{ secrets.VERACODE_API_KEY }}
+      - name: Download Veracode CLI
+        uses: wei/curl@master
+        with:
+          args: -fsS https://tools.veracode.com/veracode-cli/install | sh
+      - name: Test CLI
+        run: ./veracode --version
+        env:
+          VERACODE_API_KEY_ID: ${{ secrets.VERACODE_API_ID }}
+          VERACODE_API_KEY_SECRET: ${{ secrets.VERACODE_API_KEY }}
