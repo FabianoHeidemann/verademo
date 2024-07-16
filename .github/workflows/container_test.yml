@@ -1,4 +1,4 @@
-name: Pipeline Veracode Scanner
+name: Customer IAC scan using Veracode CLI
 
 on:
   workflow_dispatch:
