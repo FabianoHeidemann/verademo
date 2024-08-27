@@ -15,7 +15,6 @@ jobs:
     steps:
 
       - name: Build JSON file
-        uses: actions/checkout@v2
         run: |
           touch input.json
           echo "
