@@ -12,33 +12,65 @@ jobs:
         run: |
           touch input.json
           echo "
-            {
-              "name": "GitHub DAST Test",
+          {
+              "name": "Pipeline DAST Test GitHub",
               "scans": [
-                {
-                  "scan_config_request": {
-                    "target_url": {
-                      "url": "http://dvwa.fheidemann.vuln.sa.veracode.io/dvwa"
-                    }
+                  {
+                      "scan_config_request": {
+                          "target_url": {
+                              "url": "http://dvwa.fheidemann.vuln.sa.veracode.io/dvwa",
+                              "http_and_https": true,
+                              "directory_restriction_type": "DIRECTORY_AND_SUBDIRECTORY"
+                          },
+                          "scan_setting": {
+                              "user_agent": {
+                                  "type": "CUSTOM",
+                                  "custom_header": "Custom User Agent String"
+                              },
+                              "blacklist_configuration": {
+                                  "blackList": [
+                                      {
+                                          "url": "http://dvwa.fheidemann.vuln.sa.veracode.io/dvwa/security.php",
+                                          "http_and_https": true
+                                      },
+                                      {
+                                          "url": "http://dvwa.fheidemann.vuln.sa.veracode.io/dvwa/setup.php",
+                                          "http_and_https": true
+                                      },
+                                      {
+                                          "url": "http://dvwa.fheidemann.vuln.sa.veracode.io/dvwa/vulnerabilities/csrf/",
+                                          "http_and_https": true
+                                      }
+                                  ]
+                              },
+                              "auth_configuration": {
+                                  "authentications": {
+                                      "BASIC": {
+                                          "username": "admin",
+                                          "password": "admin",
+                                          "authtype": "BASIC"
+                                      }
+                                  }
+                              }
+                          }
+                      }
                   }
-                }
-              ],
+                  ],
               "schedule": {
-                "duration": {
-                  "length": 1,
-                  "unit": "DAY"
-                },
-                "scheduled": true,
-                "now": true
+                  "start_date": "2024-03-21T16:00+05:00",
+                  "duration": {
+                      "length": 3,
+                      "unit": "DAY"
+                  }
               }
-            }"
+          }"
       - name: Create DAST Scan
         run: |
           python --version
           python -m pip install --upgrade pip wheel
           python -m pip install httpie
           pip install veracode-api-signing
-          http --auth-type=veracode_hmac POST "https://api.veracode.com/was/configservice/v1/analyses?run_verification=true < input.json
+          http --auth-type=veracode_hmac POST "https://api.veracode.com/was/configservice/v1/analyses?run_verification=true" < input.json
         env:
           VERACODE_API_KEY_ID: ${{ secrets.VERACODE_API_ID }}
           VERACODE_API_KEY_SECRET: ${{ secrets.VERACODE_API_KEY }}
