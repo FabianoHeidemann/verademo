@@ -64,9 +64,11 @@ jobs:
                   }
               }
           }"
+          cat input.json
       - name: Create DAST Scan
         run: |
           cat input.json
+          ls
           python --version
           python -m pip install --upgrade pip wheel
           python -m pip install httpie
