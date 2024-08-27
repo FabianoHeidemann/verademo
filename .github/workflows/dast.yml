@@ -38,7 +38,7 @@ jobs:
           python -m pip install --upgrade pip wheel
           python -m pip install httpie
           pip install veracode-api-signing
-          http --auth-type=veracode_hmac POST "https://api.veracode.com/was/configservice/v1/analyses?run_verification=true" < input.json
+          http --auth-type=veracode_hmac POST "https://api.veracode.com/was/configservice/v1/analyses?run_verification=true < input.json
         env:
           VERACODE_API_KEY_ID: ${{ secrets.VERACODE_API_ID }}
           VERACODE_API_KEY_SECRET: ${{ secrets.VERACODE_API_KEY }}
