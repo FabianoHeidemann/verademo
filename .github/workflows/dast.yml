@@ -13,12 +13,12 @@ jobs:
           touch input.json
           echo "
             {
-              "name": "Name-of-Your-Dynamic-Analysis",
+              "name": "GitHub DAST Test",
               "scans": [
                 {
                   "scan_config_request": {
                     "target_url": {
-                      "url": "http://www.example.com"
+                      "url": "http://dvwa.fheidemann.vuln.sa.veracode.io/dvwa"
                     }
                   }
                 }
